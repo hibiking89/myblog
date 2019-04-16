@@ -2,8 +2,29 @@
     <head>
         <title>my blog</title>
     </head>
+
     <body>
-        <p>Hi there!</p>
-        <p>It works!</p>
+        <form method="get" action="">
+            {{ form }}
+            <input type="submit" value="検索">
+        </form>
+
+        {% for post in posts %}
+          <div>
+            <a href="{% url 'blog:post_list' %}" class="btn btn-primary">HOME</a>
+            <a href="{% url 'blog:create_article' %}" class="btn btn-primary">記事の作成</a>
+            loginuser: {{ user.username }}<br>
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'account:logoutview' %}" class="btn btn-primary">LOGOUT</a>
+            {% else %}
+              <a href="{% url 'account:loginview' %}" class="btn btn-primary">LOGIN</a>
+            {% endif %}
+              <p>date: {{ post.created_date }}</p>
+              <h1><a href="{% url 'blog:article' post.id %}">title: {{ post.title }}</a></h1>
+              <p>{{ post.text|linebreaksbr }}</p>
+              <hr>
+          </div>
+        {% endfor %}
+
     </body>
 </html>
